@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Karanpreet Singh — Brand Creator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  :root {
+    --rcb-red: #CC0000;
+    --rcb-red-dark: #990000;
+    --rcb-gold: #D4A017;
+    --rcb-gold-light: #F0C040;
+    --rcb-black: #080808;
+    --rcb-dark: #101010;
+    --rcb-surface: #181818;
+    --rcb-muted: #252525;
+    --rcb-border: #2E2E2E;
+    --rcb-text: #F0EEE8;
+    --rcb-dim: #888880;
+    --rcb-dimmer: #555550;
+  }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--rcb-black);
+    color: var(--rcb-text);
+    cursor: none;
+    overflow-x: hidden;
+  }
+ 
+  /* ─── CUSTOM CURSOR ─── */
+  #cursor {
+    width: 10px; height: 10px;
+    background: var(--rcb-gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: width 0.18s, height 0.18s, background 0.18s, opacity 0.2s;
+  }
+  #cursor-ring {
+    width: 38px; height: 38px;
+    border: 1.5px solid rgba(212,160,23,0.45);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-hover #cursor { width: 18px; height: 18px; background: var(--rcb-red); }
+  .cursor-hover #cursor-ring { width: 56px; height: 56px; border-color: rgba(204,0,0,0.5); }
+ 
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--rcb-black); }
+  ::-webkit-scrollbar-thumb { background: var(--rcb-red); }
+ 
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 1000;
+    padding: 1.6rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.97) 0%, rgba(8,8,8,0) 100%);
+    transition: background 0.3s;
+  }
+  nav.scrolled { background: rgba(8,8,8,0.97); border-bottom: 1px solid var(--rcb-border); }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: 5px;
+    color: var(--rcb-text);
+    text-decoration: none;
+    cursor: none;
+  }
+  .nav-logo span { color: var(--rcb-gold); }
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+  .nav-links a {
+    font-size: 0.72rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--rcb-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: none;
+  }
+  .nav-links a:hover { color: var(--rcb-gold); }
+  .nav-cta {
+    background: var(--rcb-red) !important;
+    color: #fff !important;
+    padding: 0.55rem 1.4rem;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 100%, 8px 100%);
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--rcb-gold) !important; color: #000 !important; }
+ 
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 0 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 80% 50%, rgba(204,0,0,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(212,160,23,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-bg-num {
+    position: absolute;
+    right: -1rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42vw;
+    color: rgba(204,0,0,0.035);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -4px;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; }
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--rcb-gold);
+    margin-bottom: 1.8rem;
+    display: flex; align-items: center; gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 40px; height: 1px;
+    background: var(--rcb-gold);
+  }
+  .hero-h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 10vw, 9.5rem);
+    line-height: 0.88;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.35s forwards;
+  }
+  .hero-h1 .line-red { color: var(--rcb-red); display: block; }
+  .hero-h1 .line-gold { color: var(--rcb-gold); display: block; }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--rcb-dim);
+    font-weight: 300;
+    max-width: 440px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.5s forwards;
+  }
+  .hero-actions {
+    display: flex; gap: 1.2rem; align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.65s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: var(--rcb-red);
+    color: #fff;
+    padding: 1.05rem 2.2rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: none;
+    transition: background 0.25s, transform 0.2s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 12px 100%);
+  }
+  .btn-primary:hover { background: var(--rcb-gold); color: #000; transform: translateY(-2px); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    color: var(--rcb-dim);
+    font-size: 0.75rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: none;
+    border-bottom: 1px solid var(--rcb-border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--rcb-gold); border-color: var(--rcb-gold); }
+  .hero-scroll-indicator {
+    position: absolute;
+    bottom: 2.5rem; right: 4rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+    font-size: 0.62rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rcb-dimmer);
+    writing-mode: vertical-rl;
+    opacity: 0;
+    animation: fadeIn 1s 1.2s forwards;
+  }
+  .hero-scroll-indicator::after {
+    content: '';
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--rcb-gold), transparent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+ 
+  /* ─── TICKER ─── */
+  .ticker {
+    background: var(--rcb-red);
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0.7rem 0;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+  }
+  .ticker-track {
+    display: inline-block;
+    animation: tickerMove 28s linear infinite;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 5px;
+    color: rgba(255,255,255,0.88);
+  }
+  @keyframes tickerMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+ 
+  /* ─── SECTION COMMONS ─── */
+  section { padding: 8rem 4rem; }
+  .section-label {
+    font-size: 0.63rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--rcb-gold);
+    margin-bottom: 3.5rem;
+    display: flex; align-items: center; gap: 1.2rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1;
+    height: 1px; background: var(--rcb-border);
+  }
+  .section-label .num {
+    color: var(--rcb-dimmer);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+ 
+  /* ─── ABOUT ─── */
+  .about-section { background: var(--rcb-dark); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .about-h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+  }
+  .about-h2 em { color: var(--rcb-red); font-style: normal; }
+  .about-body {
+    font-size: 0.95rem;
+    color: var(--rcb-dim);
+    line-height: 1.95;
+    margin-bottom: 1.2rem;
+  }
+  .about-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+  .tag {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--rcb-border);
+    color: var(--rcb-dim);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .tag:hover { border-color: var(--rcb-gold); color: var(--rcb-gold); }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rcb-border);
+    border: 1px solid var(--rcb-border);
+  }
+  .stat-block {
+    background: var(--rcb-surface);
+    padding: 2rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .stat-block:hover { background: var(--rcb-muted); }
+  .stat-block::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--rcb-red);
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--rcb-gold);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label {
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rcb-dim);
+  }
+ 
+  /* ─── SERVICES ─── */
+  .services-section { background: var(--rcb-black); }
+  .services-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 4rem;
+  }
+  .services-h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: 1px;
+  }
+  .services-h2 span { color: var(--rcb-red); }
+  .services-desc {
+    font-size: 0.92rem;
+    color: var(--rcb-dim);
+    line-height: 1.9;
+    align-self: end;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rcb-border);
+    border: 1px solid var(--rcb-border);
+  }
+  .service-card {
+    background: var(--rcb-dark);
+    padding: 2.5rem 2.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--rcb-gold);
+    transition: width 0.45s ease;
+  }
+  .service-card:hover { background: var(--rcb-surface); }
+  .service-card:hover::after { width: 100%; }
+  .service-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: rgba(204,0,0,0.12);
+    line-height: 1;
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+  }
+  .service-card:hover .service-num { color: rgba(204,0,0,0.22); }
+  .service-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+    color: var(--rcb-text);
+  }
+  .service-desc {
+    font-size: 0.84rem;
+    color: var(--rcb-dim);
+    line-height: 1.85;
+  }
+ 
+  /* ─── PRODUCTS ─── */
+  .products-section { background: var(--rcb-dark); }
+  .products-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 3.5rem;
+  }
+  .products-h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: 1px;
+  }
+  .products-h2 span { color: var(--rcb-gold); }
+  .filter-tabs { display: flex; gap: 0.5rem; }
+  .filter-tab {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--rcb-border);
+    color: var(--rcb-dim);
+    background: none;
+    cursor: none;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-tab:hover, .filter-tab.active { background: var(--rcb-red); border-color: var(--rcb-red); color: #fff; }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .product-card {
+    background: var(--rcb-surface);
+    border: 1px solid var(--rcb-border);
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(.22,.68,0,1.2), border-color 0.3s;
+    cursor: none;
+  }
+  .product-card:hover { transform: translateY(-8px); border-color: var(--rcb-gold); }
+  .product-thumb {
+    height: 200px;
+    background: var(--rcb-muted);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-thumb-bg {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 8rem;
+    color: rgba(204,0,0,0.07);
+    letter-spacing: -3px;
+    user-select: none;
+  }
+  .product-emoji { font-size: 3.5rem; position: relative; z-index: 1; }
+  .product-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    background: var(--rcb-red);
+    color: #fff;
+  }
+  .product-info { padding: 1.4rem 1.25rem 1.25rem; }
+  .product-brand {
+    font-size: 0.62rem;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--rcb-gold);
+    margin-bottom: 0.4rem;
+  }
+  .product-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+  }
+  .product-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 0.8rem;
+  }
+  .product-price {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--rcb-text);
+  }
+  .product-cat {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rcb-dim);
+    border: 1px solid var(--rcb-border);
+    padding: 3px 8px;
+  }
+ 
+  /* ─── WORK / PINTEREST ─── */
+  .work-section { background: var(--rcb-black); }
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rcb-border);
+    border: 1px solid var(--rcb-border);
+    margin-bottom: 3rem;
+  }
+  .work-pin {
+    background: var(--rcb-dark);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .work-pin:hover { background: var(--rcb-surface); }
+  .work-pin-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+  .work-pin-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    margin-bottom: 0.4rem;
+  }
+  .work-pin-type {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rcb-dim);
+    margin-bottom: 1rem;
+  }
+  .work-pin-stat {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--rcb-red);
+  }
+  .work-pin-stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rcb-dimmer);
+    margin-top: 2px;
+  }
+ 
+  /* ─── BRANDS ─── */
+  .brands-section { background: var(--rcb-dark); }
+  .brands-marquee {
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 1rem 0;
+    border-top: 1px solid var(--rcb-border);
+    border-bottom: 1px solid var(--rcb-border);
+  }
+  .brands-track {
+    display: inline-block;
+    animation: tickerMove 20s linear infinite;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 8px;
+    color: var(--rcb-dimmer);
+  }
+  .brands-track span { color: var(--rcb-border); margin: 0 2rem; }
+ 
+  /* ─── CONTACT ─── */
+  .contact-section {
+    background: var(--rcb-black);
+    min-height: 85vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-bg-text {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28vw;
+    color: rgba(204,0,0,0.025);
+    letter-spacing: -4px;
+    pointer-events: none;
+    user-select: none;
+    line-height: 0.85;
+  }
+  .contact-content { position: relative; z-index: 1; }
+  .contact-pre {
+    font-size: 0.68rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--rcb-gold);
+    margin-bottom: 2rem;
+  }
+  .contact-h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    line-height: 0.9;
+    margin-bottom: 2rem;
+  }
+  .contact-h2 .red { color: var(--rcb-red); }
+  .contact-h2 .gold { color: var(--rcb-gold); }
+  .contact-body {
+    font-size: 0.95rem;
+    color: var(--rcb-dim);
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto 3rem;
+  }
+  .contact-email-link {
+    display: inline-block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    color: var(--rcb-text);
+    text-decoration: none;
+    border-bottom: 2px solid var(--rcb-red);
+    padding-bottom: 4px;
+    cursor: none;
+    transition: color 0.2s, border-color 0.2s;
+    margin-bottom: 3rem;
+    display: block;
+  }
+  .contact-email-link:hover { color: var(--rcb-gold); border-color: var(--rcb-gold); }
+  .social-links { display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; }
+  .social-link {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rcb-dim);
+    text-decoration: none;
+    cursor: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .social-link:hover { color: var(--rcb-gold); border-color: var(--rcb-gold); }
+ 
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--rcb-dark);
+    padding: 2rem 4rem;
+    border-top: 1px solid var(--rcb-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--rcb-dimmer);
+  }
+  footer a { color: var(--rcb-dimmer); text-decoration: none; cursor: none; transition: color 0.2s; }
+  footer a:hover { color: var(--rcb-gold); }
+  footer .gold { color: var(--rcb-gold); }
+  footer .red { color: var(--rcb-red); }
+ 
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+ 
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .hero { padding: 0 1.5rem; }
+    .about-grid, .services-intro { grid-template-columns: 1fr; gap: 3rem; }
+    .services-grid, .products-grid { grid-template-columns: 1fr 1fr; }
+    .work-grid { grid-template-columns: 1fr 1fr; }
+    footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .hero-h1 { font-size: 4rem; }
+    .services-grid, .products-grid, .work-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .filter-tabs { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+ 
+<!-- ─── MAGNETIC CURSOR ─── -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+ 
+<!-- ─── NAV ─── -->
+<nav id="main-nav">
+  <a href="#hero" class="nav-logo">K<span>.</span>SINGH</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#products">Products</a>
+    <a href="#work">Work</a>
+    <a href="#contact" class="nav-cta">Collaborate</a>
+  </div>
+</nav>
+ 
+<!-- ─── HERO ─── -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-bg-num">18</div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Pinterest Creator · Sportswear Enthusiast · Growing Creator</div>
+    <h1 class="hero-h1">
+      CREATE.<br>
+      <span class="line-red">SHARE.</span>
+      <span class="line-gold">GROW.</span>
+    </h1>
+    <p class="hero-sub">
+      A Pinterest creator passionate about sportswear — sharing content around brands like Adidas and Puma, growing an audience, and exploring brand collaboration opportunities.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Let's Collaborate →</a>
+      <a href="#work" class="btn-secondary">View My Work ↓</a>
+    </div>
+  </div>
+  <div class="hero-scroll-indicator">Scroll</div>
+</section>
+ 
+<!-- ─── TICKER (RCB easter egg: "Ee Sala Cup Namde" + "Play Bold") ─── -->
+<div class="ticker">
+  <div class="ticker-track">
+    PLAY BOLD &nbsp;·&nbsp; ADIDAS PARTNER &nbsp;·&nbsp; PUMA CREATOR &nbsp;·&nbsp; PINTEREST SPECIALIST &nbsp;·&nbsp; EE SALA CUP NAMDE &nbsp;·&nbsp; BRAND STRATEGY &nbsp;·&nbsp; AFFILIATE MARKETING &nbsp;·&nbsp; VIRAL CONTENT &nbsp;·&nbsp; PLAY BOLD &nbsp;·&nbsp; ADIDAS PARTNER &nbsp;·&nbsp; PUMA CREATOR &nbsp;·&nbsp; PINTEREST SPECIALIST &nbsp;·&nbsp; EE SALA CUP NAMDE &nbsp;·&nbsp; BRAND STRATEGY &nbsp;·&nbsp; AFFILIATE MARKETING &nbsp;·&nbsp; VIRAL CONTENT &nbsp;·&nbsp;
+  </div>
+</div>
+ 
+<!-- ─── ABOUT ─── -->
+<section class="about-section" id="about">
+  <div class="section-label"><span class="num">01</span> About</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <h2 class="about-h2 reveal">Content That<br>Hits <em>Different.</em></h2>
+      <p class="about-body reveal reveal-delay-1">
+        Karanpreet is a Pinterest creator building a presence in the sportswear space. He creates organic content around brands like Adidas and Puma — mood boards, product showcases, and style inspiration — and is growing his audience steadily.
+      </p>
+      <p class="about-body reveal reveal-delay-2">
+        Still early in his journey, he's focused on building a genuine community around sportswear content and working towards brand collaboration opportunities.
+      </p>
+      <div class="about-tags reveal reveal-delay-3">
+        <span class="tag">Adidas</span>
+        <span class="tag">Puma</span>
+        <span class="tag">Pinterest SEO</span>
+        <span class="tag">Affiliate Marketing</span>
+        <span class="tag">Brand Strategy</span>
+        <span class="tag">Content Creation</span>
+        <span class="tag">Trend Research</span>
+      </div>
+    </div>
+    <div class="stats-grid reveal reveal-delay-2">
+      <div class="stat-block">
+        <div class="stat-num">1.2K+</div>
+        <div class="stat-label">Monthly Views</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">40+</div>
+        <div class="stat-label">Pins Created</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">Growing</div>
+        <div class="stat-label">Audience</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">2025</div>
+        <div class="stat-label">Started</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ─── SERVICES ─── -->
+<section class="services-section" id="services">
+  <div class="section-label"><span class="num">02</span> Services</div>
+  <div class="services-intro">
+    <h2 class="services-h2 reveal">What I'm <span>Building</span><br>For Brands.</h2>
+    <p class="services-desc reveal reveal-delay-1">
+      From creating content to exploring affiliate opportunities — here's what I offer and am actively developing as I grow my presence on Pinterest.
+    </p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <div class="service-title">Brand Content</div>
+      <p class="service-desc">Organic Pinterest campaigns tailored to brand aesthetics. Pins that feel native, perform like ads, and build long-term loyalty.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">02</div>
+      <div class="service-title">Affiliate Strategy</div>
+      <p class="service-desc">End-to-end affiliate pin strategy — keyword optimization, board curation, and click-to-conversion funnels that actually convert.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">03</div>
+      <div class="service-title">Product Showcases</div>
+      <p class="service-desc">Visual storytelling around new drops. Lifestyle shoot concepts, mood boards, and launch campaigns for maximum impact.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">04</div>
+      <div class="service-title">Trend Research</div>
+      <p class="service-desc">Pinterest SEO, trend forecasting and content calendars. Stay ahead of what's trending before it trends everywhere else.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">05</div>
+      <div class="service-title">Audience Building</div>
+      <p class="service-desc">Growing engaged communities around brand identities — from zero to loyal following through organic, consistent content.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-num">06</div>
+      <div class="service-title">Analytics Reports</div>
+      <p class="service-desc">Monthly performance deep-dives — impression analysis, save rates, outbound click tracking, and actionable recommendations.</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- ─── PRODUCTS ─── -->
+<section class="products-section" id="products">
+  <div class="section-label"><span class="num">03</span> Featured Products</div>
+  <div class="products-header">
+    <h2 class="products-h2 reveal">Top Picks<br>I <span>Promote.</span></h2>
+    <div class="filter-tabs reveal reveal-delay-1">
+      <button class="filter-tab active" onclick="filterProducts('all', this)">All</button>
+      <button class="filter-tab" onclick="filterProducts('adidas', this)">Adidas</button>
+      <button class="filter-tab" onclick="filterProducts('puma', this)">Puma</button>
+      <button class="filter-tab" onclick="filterProducts('nike', this)">Nike</button>
+    </div>
+  </div>
+  <div class="products-grid" id="products-grid">
+ 
+    <div class="product-card" data-brand="adidas">
+      <div class="product-thumb">
+        <div class="product-thumb-bg">ADI</div>
+        <div class="product-emoji">👟</div>
+        <div class="product-badge">Trending</div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Adidas</div>
+        <div class="product-name">Ultraboost 24</div>
+        <div class="product-row">
+          <span class="product-price">₹16,999</span>
+          <span class="product-cat">Running</span>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="product-card" data-brand="puma">
+      <div class="product-thumb">
+        <div class="product-thumb-bg">PMA</div>
+        <div class="product-emoji">🦁</div>
+        <div class="product-badge">New Drop</div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Puma</div>
+        <div class="product-name">RS-X Efekt</div>
+        <div class="product-row">
+          <span class="product-price">₹11,499</span>
+          <span class="product-cat">Lifestyle</span>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="product-card" data-brand="adidas">
+      <div class="product-thumb">
+        <div class="product-thumb-bg">ADI</div>
+        <div class="product-emoji">🎽</div>
+        <div class="product-badge">Promoted</div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Adidas</div>
+        <div class="product-name">Tiro 24 Jersey</div>
+        <div class="product-row">
+          <span class="product-price">₹4,999</span>
+          <span class="product-cat">Apparel</span>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="product-card" data-brand="puma">
+      <div class="product-thumb">
+        <div class="product-thumb-bg">PMA</div>
+        <div class="product-emoji">🏃</div>
+        <div class="product-badge">Top Pick</div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Puma</div>
+        <div class="product-name">Nitro Elite 3</div>
+        <div class="product-row">
+          <span class="product-price">₹18,000</span>
+          <span class="product-cat">Running</span>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="product-card" data-brand="nike">
+      <div class="product-thumb">
+        <div class="product-thumb-bg">NK</div>
+        <div class="product-emoji">⚡</div>
+        <div class="product-badge">Featured</div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Nike</div>
+        <div class="product-name">Air Max 97</div>
+        <div class="product-row">
+          <span class="product-price">₹14,499</span>
+          <span class="product-cat">Lifestyle</span>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="product-card" data-brand="puma">
+      <div class="product-thumb">
+        <div class="product-thumb-bg">PMA</div>
+        <div class="product-emoji">⚽</div>
+        <div class="product-badge">New Drop</div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">Puma</div>
+        <div class="product-name">Future Pro FG</div>
+        <div class="product-row">
+          <span class="product-price">₹8,999</span>
+          <span class="product-cat">Football</span>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- ─── WORK (Pinterest campaigns) ─── -->
+<section class="work-section" id="work">
+  <div class="section-label"><span class="num">04</span> Content I Make</div>
+  <div class="work-grid">
+    <div class="work-pin reveal">
+      <div class="work-pin-icon">👟</div>
+      <div class="work-pin-brand">Adidas</div>
+      <div class="work-pin-type">Style Boards</div>
+      <div class="work-pin-stat">Organic</div>
+      <div class="work-pin-stat-label">Content</div>
+    </div>
+    <div class="work-pin reveal reveal-delay-1">
+      <div class="work-pin-icon">🦁</div>
+      <div class="work-pin-brand">Puma</div>
+      <div class="work-pin-type">Product Pins</div>
+      <div class="work-pin-stat">Affiliate</div>
+      <div class="work-pin-stat-label">Strategy</div>
+    </div>
+    <div class="work-pin reveal reveal-delay-2">
+      <div class="work-pin-icon">🎽</div>
+      <div class="work-pin-brand">Adidas</div>
+      <div class="work-pin-type">Apparel Boards</div>
+      <div class="work-pin-stat">Growing</div>
+      <div class="work-pin-stat-label">Saves</div>
+    </div>
+    <div class="work-pin reveal reveal-delay-3">
+      <div class="work-pin-icon">⚡</div>
+      <div class="work-pin-brand">Nike</div>
+      <div class="work-pin-type">Trend Boards</div>
+      <div class="work-pin-stat">Building</div>
+      <div class="work-pin-stat-label">Reach</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ─── BRANDS MARQUEE ─── -->
+<section class="brands-section">
+  <div class="section-label"><span class="num">05</span> Brands I Create Content Around</div>
+  <div class="brands-marquee">
+    <div class="brands-track">
+      ADIDAS <span>·</span> PUMA <span>·</span> NIKE <span>·</span> NEW BALANCE <span>·</span> REEBOK <span>·</span> UNDER ARMOUR <span>·</span> CONVERSE <span>·</span> VANS <span>·</span>
+      ADIDAS <span>·</span> PUMA <span>·</span> NIKE <span>·</span> NEW BALANCE <span>·</span> REEBOK <span>·</span> UNDER ARMOUR <span>·</span> CONVERSE <span>·</span> VANS <span>·</span>
+    </div>
+  </div>
+</section>
+ 
+<!-- ─── CONTACT ─── -->
+<section class="contact-section" id="contact">
+  <div class="contact-bg-text">BOLD</div>
+  <div class="contact-content">
+    <div class="contact-pre">Ready to work together?</div>
+    <h2 class="contact-h2">
+      Let's Build<br>
+      <span class="red">Something</span><br>
+      <span class="gold">Iconic.</span>
+    </h2>
+    <p class="contact-body">
+      Open to affiliate partnerships, brand collaborations, and content opportunities. If you're a brand looking to grow on Pinterest, I'd love to connect and explore what we can build together.
+    </p>
+    <a href="mailto:karanpreet@gmail.com" class="contact-email-link">karanpreet@gmail.com</a>
+    <div class="social-links">
+      <a href="#" class="social-link">Pinterest</a>
+      <a href="#" class="social-link">Instagram</a>
+      <a href="#" class="social-link">LinkedIn</a>
+    </div>
+  </div>
+</section>
+ 
+<!-- ─── FOOTER (Chinnaswamy = RCB stadium easter egg) ─── -->
+<footer>
+  <div>© 2025 Karanpreet Singh</div>
+  <div>Based near the <span class="gold">Chinnaswamy</span> side of things &nbsp;·&nbsp; Play <span class="red">Bold.</span></div>
+  <div><button onclick="window.scrollTo({top:0,behavior:'smooth'})" style="background:none;border:none;font:inherit;font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--rcb-dimmer);cursor:none;transition:color 0.2s;padding:0;" onmouseenter="this.style.color='var(--rcb-gold)'" onmouseleave="this.style.color='var(--rcb-dimmer)'">Back to top ↑</button></div>
+</footer>
+ 
+<!-- ─── SCRIPTS ─── -->
+<script>
+  /* ── Cursor ── */
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+ 
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+ 
+  (function animRing() {
+    rx += (mx - rx) * 0.1;
+    ry += (my - ry) * 0.1;
+    cursorRing.style.left = rx + 'px';
+    cursorRing.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+ 
+  /* ── Hover state ── */
+  document.querySelectorAll('a, button, .product-card, .service-card, .work-pin, .stat-block').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+ 
+  /* ── Magnetic buttons ── */
+  document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta, .contact-email-link').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dx = (e.clientX - cx) * 0.25;
+      const dy = (e.clientY - cy) * 0.25;
+      el.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+  });
+ 
+  /* ── Nav on scroll ── */
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+ 
+  /* ── Scroll reveal ── */
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+ 
+  /* ── Product filter ── */
+  function filterProducts(brand, btn) {
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.product-card').forEach(card => {
+      const show = brand === 'all' || card.dataset.brand === brand;
+      card.style.display = show ? 'block' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
